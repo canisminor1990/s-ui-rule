@@ -1,0 +1,490 @@
+mixed-port: 7890
+allow-lan: true
+bind-address: '*'
+mode: rule
+log-level: info
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+external-controller: '0.0.0.0:9090'
+find-process-mode: strict
+
+geodata-mode: true
+geodata-loader: memconservative
+geo-auto-update: true
+geo-update-interval: 24
+geox-url:
+  geoip: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
+  geosite: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
+  mmdb: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb
+  asn: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb
+
+tun:
+  enable: true
+  stack: mixed
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+dns:
+  enable: true
+  cache-algorithm: arc
+  listen: '0.0.0.0:1053'
+  ipv6: false
+  use-hosts: true
+  use-system-hosts: true
+  respect-rules: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - '*.lan'
+    - '*.local'
+    - '*.localhost'
+    - '*.localdomain'
+    - '*.home.arpa'
+    - 'localhost'
+    - 'lens.l.google.com'
+    - 'stun.l.google.com'
+    - '*.srv.nintendo.net'
+    - '*.stun.playstation.net'
+    - 'xbox.*.*.microsoft.com'
+    - '*.xboxlive.com'
+    - '*.msftncsi.com'
+    - '*.msftconnecttest.com'
+    - 'time.*.com'
+    - 'time.*.gov'
+    - 'time.*.edu.cn'
+    - 'time.*.apple.com'
+    - 'ntp.*.com'
+    - '+.pool.ntp.org'
+    - '*.ntp.org.cn'
+    - 'stun.*.*'
+    - 'stun.*.*.*'
+    - '+.stun.*.*'
+    - '+.stun.*.*.*'
+    - 'mesu.apple.com'
+    - 'swscan.apple.com'
+    - 'swquery.apple.com'
+    - 'swdownload.apple.com'
+    - 'swcdn.apple.com'
+    - 'swdist.apple.com'
+    - 'localhost.ptlogin2.qq.com'
+    - 'localhost.sec.qq.com'
+    - 'music.163.com'
+    - '*.music.163.com'
+    - '*.126.net'
+    - '*.xiami.com'
+    - '*.kuwo.cn'
+    - 'proxy.golang.org'
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  fallback:
+    - tls://1.1.1.1
+    - tls://8.8.8.8
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    geosite:
+      - gfw
+    ipcidr:
+      - 240.0.0.0/4
+    domain:
+      - '+.google.com'
+      - '+.googleapis.com'
+      - '+.github.com'
+      - '+.openai.com'
+      - '+.anthropic.com'
+      - '+.claude.ai'
+      - '+.cursor.com'
+      - '+.cursor.sh'
+      - '+.cursorapi.com'
+      - '+.docker.com'
+      - '+.docker.io'
+      - '+.pypi.org'
+      - '+.python.org'
+      - '+.cloudflare.com'
+      - '+.discord.com'
+      - '+.discordapp.com'
+      - '+.ollama.com'
+      - '+.ollama.ai'
+      - '+.huggingface.co'
+      - '+.hf.co'
+      - '+.steampowered.com'
+      - '+.steamcommunity.com'
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  direct-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  direct-nameserver-follow-policy: false
+  nameserver-policy:
+    'geosite:cn,private':
+      - https://dns.alidns.com/dns-query
+      - https://doh.pub/dns-query
+    'geosite:gfw,openai,github,google,youtube,telegram':
+      - tls://1.1.1.1
+      - tls://8.8.8.8
+    'domain:cursor.com,cursor.sh,cursorapi.com,anthropic.com,claude.ai,openai.com,github.com,docker.com,docker.io,pypi.org,python.org,cloudflare.com,googleapis.com,google.com,facebook.com,twitter.com,telegram.org,discord.com,discordapp.com,ollama.com,ollama.ai,huggingface.co,hf.co,steampowered.com,steamcommunity.com':
+      - tls://1.1.1.1
+      - tls://8.8.8.8
+
+sniffer:
+  enable: true
+  override-destination: false
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - +.push.apple.com
+    - Mijia Cloud
+    - dlg.io.mi.com
+    - +.apple.com
+    - +.icloud.com
+    - +.wechat.com
+    - +.wechatapp.com
+    - +.qpic.cn
+    - +.qq.com
+    - +.oray.com
+    - +.sunlogin.net
+
+proxy-groups:
+  - name: "🚀 Proxy"
+    type: select
+    proxies: ["🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", all, DIRECT]
+  - name: "🌏 Auto"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 180
+    tolerance: 50
+    lazy: true
+    proxies: [all]
+  - name: "🇯🇵 日本 Auto"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 180
+    tolerance: 50
+    lazy: true
+    filter: "日本"
+  - name: "🇸🇬 新加坡 Auto"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 180
+    tolerance: 50
+    lazy: true
+    filter: "新加坡"
+  - name: "🇭🇰 香港 Auto"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 180
+    tolerance: 50
+    lazy: true
+    filter: "香港"
+  - name: "🇺🇸 美国 Auto"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 180
+    tolerance: 50
+    lazy: true
+    filter: "美国"
+  - name: "⌨️ Cursor"
+    type: select
+    proxies: [DIRECT, "🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto"]
+  - name: "🧠 Claude"
+    type: select
+    proxies: ["🇯🇵 日本 Auto", "🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "💬 OpenAI"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "✨ Gemini"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "💻 Copilot"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🦙 Ollama"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🤗 HuggingFace"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🐙 Github"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🐳 Docker"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🐍 Python"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "☁️ Cloudflare"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🔍 Google"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🪟 Microsoft"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🍎 Apple"
+    type: select
+    proxies: [DIRECT, "🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto"]
+  - name: "📟 Telegram"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "💛 Discord"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "📺 GlobalMedia"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🪙 Crypto"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🕹️ Steam"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🎮 Game"
+    type: select
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "🇨🇳 China"
+    type: select
+    proxies: [DIRECT]
+  - name: "🎯 Direct"
+    type: select
+    proxies: [DIRECT]
+  - name: "🐠 Final"
+    type: select
+    proxies: ["🚀 Proxy", DIRECT, "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto"]
+
+rule-providers:
+  Hijacking:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Hijacking/Hijacking.yaml
+    interval: 86400
+  BlockHttpDNS:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/BlockHttpDNS/BlockHttpDNS.yaml
+    interval: 86400
+  Claude:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Claude/Claude.yaml
+    interval: 86400
+  OpenAI:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/OpenAI/OpenAI.yaml
+    interval: 86400
+  Gemini:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Gemini/Gemini.yaml
+    interval: 86400
+  Copilot:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Copilot/Copilot.yaml
+    interval: 86400
+  Github:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/GitHub/GitHub.yaml
+    interval: 86400
+  Docker:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Docker/Docker.yaml
+    interval: 86400
+  Python:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Python/Python.yaml
+    interval: 86400
+  Cloudflare:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Cloudflare/Cloudflare.yaml
+    interval: 86400
+  Google:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Google/Google_No_Resolve.yaml
+    interval: 86400
+  Microsoft:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Microsoft/Microsoft.yaml
+    interval: 86400
+  Apple:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Apple/Apple_Classical_No_Resolve.yaml
+    interval: 86400
+  Telegram:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Telegram/Telegram_No_Resolve.yaml
+    interval: 86400
+  Discord:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Discord/Discord.yaml
+    interval: 86400
+  HBO:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/HBO/HBO.yaml
+    interval: 86400
+  Disney:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Disney/Disney.yaml
+    interval: 86400
+  TikTok:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/TikTok/TikTok.yaml
+    interval: 86400
+  Netflix:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Netflix/Netflix.yaml
+    interval: 86400
+  GlobalMedia:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/GlobalMedia/GlobalMedia_Classical_No_Resolve.yaml
+    interval: 86400
+  Crypto:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Crypto/Crypto.yaml
+    interval: 86400
+  Cryptocurrency:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Cryptocurrency/Cryptocurrency.yaml
+    interval: 86400
+  SteamCN:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/SteamCN/SteamCN.yaml
+    interval: 86400
+  Steam:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Steam/Steam.yaml
+    interval: 86400
+  Game:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Game/Game.yaml
+    interval: 86400
+  Global:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Global/Global_Classical_No_Resolve.yaml
+    interval: 86400
+  ChinaMax:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/ChinaMax/ChinaMax_Classical_No_Resolve.yaml
+    interval: 86400
+  Lan:
+    type: http
+    behavior: classical
+    format: yaml
+    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/Lan/Lan.yaml
+    interval: 86400
+
+rules:
+  - RULE-SET,Lan,🎯 Direct
+  - GEOIP,PRIVATE,🎯 Direct,no-resolve
+  - DOMAIN-SUFFIX,clash.lobe.li,🎯 Direct
+  - RULE-SET,Hijacking,REJECT-DROP
+  - RULE-SET,BlockHttpDNS,REJECT-DROP
+  - DOMAIN-SUFFIX,cursor.com,⌨️ Cursor
+  - DOMAIN-SUFFIX,cursor.sh,⌨️ Cursor
+  - DOMAIN-SUFFIX,cursorapi.com,⌨️ Cursor
+  - PROCESS-NAME,Cursor.exe,⌨️ Cursor
+  - PROCESS-NAME,Cursor,⌨️ Cursor
+  - RULE-SET,Claude,🧠 Claude
+  - RULE-SET,OpenAI,💬 OpenAI
+  - RULE-SET,Gemini,✨ Gemini
+  - RULE-SET,Copilot,💻 Copilot
+  - DOMAIN-SUFFIX,ollama.com,🦙 Ollama
+  - DOMAIN-SUFFIX,ollama.ai,🦙 Ollama
+  - PROCESS-NAME,ollama.exe,🦙 Ollama
+  - PROCESS-NAME,ollama,🦙 Ollama
+  - DOMAIN-SUFFIX,huggingface.co,🤗 HuggingFace
+  - DOMAIN-SUFFIX,huggingface.com,🤗 HuggingFace
+  - DOMAIN-SUFFIX,hf.co,🤗 HuggingFace
+  - DOMAIN-SUFFIX,hf.space,🤗 HuggingFace
+  - RULE-SET,Github,🐙 Github
+  - RULE-SET,Docker,🐳 Docker
+  - RULE-SET,Python,🐍 Python
+  - RULE-SET,Cloudflare,☁️ Cloudflare
+  - RULE-SET,Google,🔍 Google
+  - RULE-SET,Microsoft,🪟 Microsoft
+  - RULE-SET,Apple,🍎 Apple
+  - RULE-SET,Telegram,📟 Telegram
+  - RULE-SET,Discord,💛 Discord
+  - RULE-SET,HBO,📺 GlobalMedia
+  - RULE-SET,Disney,📺 GlobalMedia
+  - RULE-SET,TikTok,📺 GlobalMedia
+  - RULE-SET,Netflix,📺 GlobalMedia
+  - RULE-SET,GlobalMedia,📺 GlobalMedia
+  - RULE-SET,Crypto,🪙 Crypto
+  - RULE-SET,Cryptocurrency,🪙 Crypto
+  - RULE-SET,SteamCN,🎯 Direct
+  - RULE-SET,Steam,🕹️ Steam
+  - RULE-SET,Game,🎮 Game
+  - RULE-SET,Global,🚀 Proxy
+  - RULE-SET,ChinaMax,🇨🇳 China
+  - GEOIP,CN,🇨🇳 China
+  - MATCH,🐠 Final

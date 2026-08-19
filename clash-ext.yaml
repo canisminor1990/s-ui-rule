@@ -203,12 +203,15 @@ proxy-groups:
     tolerance: 50
     lazy: true
     filter: "美国"
-  - name: "⌨️ Cursor"
+  - name: "🤯 LobeHub"
     type: select
-    proxies: [DIRECT, "🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto"]
+    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
   - name: "🧠 Claude"
     type: select
     proxies: ["🇯🇵 日本 Auto", "🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
+  - name: "⌨️ Cursor"
+    type: select
+    proxies: [DIRECT, "🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto"]
   - name: "💬 OpenAI"
     type: select
     proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
@@ -222,9 +225,6 @@ proxy-groups:
     type: select
     proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
   - name: "🤗 HuggingFace"
-    type: select
-    proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
-  - name: "🤯 LobeHub"
     type: select
     proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
   - name: "🐙 Github"
@@ -266,9 +266,6 @@ proxy-groups:
   - name: "🕹️ Steam"
     type: select
     proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
-  - name: "📥 SteamCDN"
-    type: select
-    proxies: [DIRECT, "🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto"]
   - name: "🎮 Game"
     type: select
     proxies: ["🚀 Proxy", "🌏 Auto", "🇭🇰 香港 Auto", "🇯🇵 日本 Auto", "🇸🇬 新加坡 Auto", "🇺🇸 美国 Auto", DIRECT]
@@ -294,12 +291,6 @@ rule-providers:
     behavior: classical
     format: yaml
     url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/BlockHttpDNS/BlockHttpDNS.yaml
-    interval: 86400
-  NTPService:
-    type: http
-    behavior: classical
-    format: yaml
-    url: https://cdn.jsdmirror.com/gh/perfect-panel/rules/rule/Clash/NTPService/NTPService.yaml
     interval: 86400
   Claude:
     type: http
@@ -464,29 +455,7 @@ rules:
   - DOMAIN-SUFFIX,clash.lobe.li,🎯 Direct
   - RULE-SET,Hijacking,REJECT-DROP
   - RULE-SET,BlockHttpDNS,REJECT-DROP
-  - RULE-SET,NTPService,🎯 Direct
-  - DOMAIN-KEYWORD,stun,🎯 Direct
-  - DOMAIN-SUFFIX,srv.nintendo.net,🎯 Direct
-  - DOMAIN-SUFFIX,stun.playstation.net,🎯 Direct
-  - DOMAIN-SUFFIX,xboxlive.com,🎯 Direct
-  - DOMAIN-SUFFIX,msftconnecttest.com,🎯 Direct
-  - DOMAIN-SUFFIX,msftncsi.com,🎯 Direct
-  - DOMAIN-SUFFIX,windowsupdate.com,🎯 Direct
-  - DOMAIN-SUFFIX,update.microsoft.com,🎯 Direct
-  - DOMAIN-SUFFIX,download.windowsupdate.com,🎯 Direct
-  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,🎯 Direct
-  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,🎯 Direct
-  - DOMAIN,captive.apple.com,🎯 Direct
-  - DOMAIN,connectivitycheck.gstatic.com,🎯 Direct
-  - DOMAIN-SUFFIX,jsdmirror.com,🎯 Direct
-  - DOMAIN-SUFFIX,testingcf.jsdelivr.net,🎯 Direct
-  - PROCESS-NAME,clash,🎯 Direct
-  - PROCESS-NAME,Clash Verge.exe,🎯 Direct
-  - PROCESS-NAME,verge-mihomo.exe,🎯 Direct
-  - PROCESS-NAME,aria2c.exe,🎯 Direct
-  - PROCESS-NAME,aria2c,🎯 Direct
-  - PROCESS-NAME,qbittorrent.exe,🎯 Direct
-  - PROCESS-NAME,qBittorrent.exe,🎯 Direct
+  - DOMAIN-SUFFIX,lobehub.com,🤯 LobeHub
   - DOMAIN-SUFFIX,cursor.com,⌨️ Cursor
   - DOMAIN-SUFFIX,cursor.sh,⌨️ Cursor
   - DOMAIN-SUFFIX,cursorapi.com,⌨️ Cursor
@@ -504,7 +473,6 @@ rules:
   - DOMAIN-SUFFIX,huggingface.com,🤗 HuggingFace
   - DOMAIN-SUFFIX,hf.co,🤗 HuggingFace
   - DOMAIN-SUFFIX,hf.space,🤗 HuggingFace
-  - DOMAIN-SUFFIX,lobehub.com,🤯 LobeHub
   - RULE-SET,Github,🐙 Github
   - RULE-SET,Cloudflare,☁️ Cloudflare
   - DOMAIN-SUFFIX,amazonaws.com,🟧 AWS
@@ -530,21 +498,7 @@ rules:
   - RULE-SET,GlobalMedia,📺 GlobalMedia
   - RULE-SET,Crypto,🪙 Crypto
   - RULE-SET,Cryptocurrency,🪙 Crypto
-  - RULE-SET,SteamCN,📥 SteamCDN
-  - DOMAIN-KEYWORD,steampipe,📥 SteamCDN
-  - DOMAIN-SUFFIX,steamcdn-a.akamaihd.net,📥 SteamCDN
-  - DOMAIN-SUFFIX,steamcontent.tnkjmec.com,📥 SteamCDN
-  - DOMAIN-SUFFIX,steammobile.akamaized.net,📥 SteamCDN
-  - DOMAIN-SUFFIX,steam.apac.qtlglb.com,📥 SteamCDN
-  - DOMAIN-SUFFIX,steam.eca.qtlglb.com,📥 SteamCDN
-  - DOMAIN-SUFFIX,steam.naeu.qtlglb.com,📥 SteamCDN
-  - DOMAIN-SUFFIX,steam.ru.qtlglb.com,📥 SteamCDN
-  - DOMAIN-SUFFIX,steam.cdn.on.net,📥 SteamCDN
-  - DOMAIN-SUFFIX,steam.cdn.orcon.net.nz,📥 SteamCDN
-  - DOMAIN-SUFFIX,steam.cdn.slingshot.co.nz,📥 SteamCDN
-  - DOMAIN-SUFFIX,steam.cdn.webra.ru,📥 SteamCDN
-  - DOMAIN-SUFFIX,edge.steam-dns.top.comcast.net,📥 SteamCDN
-  - DOMAIN-SUFFIX,f3b7q2p3.ssl.hwcdn.net,📥 SteamCDN
+  - RULE-SET,SteamCN,🎯 Direct
   - RULE-SET,Steam,🕹️ Steam
   - RULE-SET,Game,🎮 Game
   - RULE-SET,Global,🚀 Proxy

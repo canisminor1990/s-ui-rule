@@ -1,0 +1,36 @@
+name: Sync Clash rules
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - clash-ext.yaml
+      - scripts/sync_subclash.py
+      - scripts/deploy.sh
+      - .github/workflows/sync.yml
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start ssh-agent
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SUI_SSH_KEY }}
+
+      - name: Trust hub host key
+        env:
+          SUI_HOST: ${{ secrets.SUI_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -t ed25519,rsa,ecdsa "$SUI_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy subClashExt
+        env:
+          SUI_HOST: ${{ secrets.SUI_HOST }}
+          SUI_USER: ${{ secrets.SUI_USER }}
+        run: bash scripts/deploy.sh

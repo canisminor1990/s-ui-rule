@@ -1,0 +1,6 @@
+.deploy/
+_dump_*.py
+_inspect_db.py
+__pycache__/
+*.pyc
+.DS_Store
